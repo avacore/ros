@@ -10,12 +10,12 @@ class gpio_select_t {
     enum class function_t : uint8_t {
       input = 0,
       output = 1,
-      alternate_0 = 2,
-      alternate_1 = 3,
-      alternate_2 = 4,
-      alternate_3 = 5,
-      alternate_4 = 6,
-      alternate_5 = 7,
+      alternate_0 = 4,
+      alternate_1 = 5,
+      alternate_2 = 6,
+      alternate_3 = 7,
+      alternate_4 = 3,
+      alternate_5 = 2,
     };
     
     void set_function( pin_t pin, function_t function );
