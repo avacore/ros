@@ -1,13 +1,5 @@
-#define ARM_BASE  0x20000000
-#define GPIO_BASE (ARM_BASE + 0x200000)
-volatile unsigned *gpio;
-
-#define GPIO_IN(g) *(gpio + ((g)/10)) &= ~(7<<(((g)%10)*3))
-#define GPIO_OUT(g) *(gpio + ((g)/10)) |=  (1<<(((g)%10)*3))
-#define GPIO_SET(g) *(gpio + 7) = (1<<g)
-#define GPIO_CLR(g) *(gpio + 10) = (1<<g)
-
 #include "drivers/gpio.h"
+#include "drivers/uart.h"
 
 extern "C" void kmain() {
   gpio_select_t *gpio_s = gpio_select_t::get_gpio_select();
@@ -20,6 +12,17 @@ extern "C" void kmain() {
 
   gpio_s->set_function( 16, gpio_select_t::function_t::output );
   gpio_v->clr( 16 );
+  
+  uart_t *uart = uart_t::get_uart();
+  uart->setup( uart_t::baudrate_t::b115200 );
 
-  while (1);
+  gpio_v->set( 16 );
+
+  for( int i = 0; i < 1024; ++i ) {
+    uart->put( '!' );
+  }
+  
+  gpio_v->clr( 16 );
+
+  while( 1 ) {}
 }
